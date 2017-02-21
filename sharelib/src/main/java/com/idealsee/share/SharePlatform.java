@@ -6,9 +6,9 @@ package com.idealsee.share;
  */
 
 public enum SharePlatform {
-    SINA_WEIBO,
     WEIXIN,
     WEIXIN_TIMELINE,
+    SINA_WEIBO,
     SHORT_MESSAGE,
     SYSTEM_SHARE
 }

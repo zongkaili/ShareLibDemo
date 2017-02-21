@@ -13,7 +13,7 @@ import com.idealsee.share.SharePlatform;
 import com.idealsee.share.content.BaseShareContent;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button button1,button2,button3,button4,button5,button6;
+    private Button button1,button2,button3,button4,button5;
     private BaseShareContent content;//测试用的分享内容
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button3 = (Button) findViewById(R.id.button3);
         button4 = (Button) findViewById(R.id.button4);
         button5 = (Button) findViewById(R.id.button5);
-        button6 = (Button) findViewById(R.id.button6);
     }
 
     private void initData() {
@@ -48,20 +47,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.button1:
+                Toast.makeText(this,getResources().getString(R.string.tip_shareto_weixin),Toast.LENGTH_LONG).show();
                 share(SharePlatform.WEIXIN,content,false);
                 break;
             case R.id.button2:
+                Toast.makeText(this,getResources().getString(R.string.tip_shareto_pyq),Toast.LENGTH_LONG).show();
                 share(SharePlatform.WEIXIN_TIMELINE,content,false);
                 break;
             case R.id.button3:
+                Toast.makeText(this,getResources().getString(R.string.tip_shareto_weibo),Toast.LENGTH_LONG).show();
                 share(SharePlatform.SINA_WEIBO,content,false);
                 break;
             case R.id.button4:
-                share(SharePlatform.WEIXIN,content,false);
+                Toast.makeText(this,getResources().getString(R.string.tip_shareto_sms),Toast.LENGTH_LONG).show();
+                share(SharePlatform.SHORT_MESSAGE,content,false);
                 break;
             case R.id.button5:
-                break;
-            case R.id.button6:
+                Toast.makeText(this,getResources().getString(R.string.tip_shareto_system),Toast.LENGTH_LONG).show();
+                share(SharePlatform.SYSTEM_SHARE,content,false);
                 break;
             default:
                 break;

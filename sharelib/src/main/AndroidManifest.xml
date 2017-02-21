@@ -21,10 +21,10 @@
             <!--下面的intent-filter是用于接收分享后的回调，
             此处注释掉是因为之前的分享在app中的WXEntryActivity中已经设置了微博分享的回调，
             此处再设置的话会导致回调时系统弹出两个activity供选择，此处暂时注释掉，会出现分享后接收不到回调，故此activity无法在分享后的回调中finish-->
-           <!-- <intent-filter>
+           <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
@@ -51,26 +51,6 @@
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
         </receiver>
-
-        <!-- QQ空间和QQ SSO授权的Activity注册 -->
-        <activity
-            android:name="com.tencent.tauth.AuthActivity"
-            android:launchMode="singleTask"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="tencent1104906138" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.tencent.connect.common.AssistActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
     </application>
 
 </manifest>

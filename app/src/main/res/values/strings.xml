@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">MyShareLibDemo</string>
 
+    <string name="tip_shareto_weixin">微信好友分享</string>
+    <string name="tip_shareto_pyq">微信朋友圈分享</string>
+    <string name="tip_shareto_weibo">微博分享</string>
+    <string name="tip_shareto_sms">短信分享</string>
+    <string name="tip_shareto_system">系统分享</string>
+
     <string name="tip_not_install_weixin">您还没有安装微信喔</string>
     <string name="tip_not_install_weibo">您还没有安装新浪微博喔</string>
+
+
+
 </resources>
