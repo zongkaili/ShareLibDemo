@@ -64,3 +64,4 @@ ShareApi.share(this, sharePlatform, content, new ShareListener() {
     此外，微信分享时，如果停在选择用户的界面，然后按下Home键，再切回到app中，这时选择用户的界面会消失,但是同样收不到任何回调。
 
 ## 参考
+<!--https://github.com/cclink/UniShare-->
