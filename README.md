@@ -23,10 +23,10 @@
 ### 5. app层调用分享
 isPlatformInstalled(): 判断要分享的目标平台是否已经安装
 ```java
- if(ShareApi.isPlatformInstalled(this,sharePlatform)){
+if(ShareApi.isPlatformInstalled(this,sharePlatform)){
             switch (sharePlatform){
                 case WEIXIN:
-                case WEIXIN_TIMELINE:
+                case WEIXIN_PYQ:
                     Toast.makeText(this,getResources().getString(R.string.tip_not_install_weixin),Toast.LENGTH_LONG).show();
                     break;
                 case SINA_WEIBO:
@@ -39,8 +39,28 @@ isPlatformInstalled(): 判断要分享的目标平台是否已经安装
         }
 ```
 share()：分享
+通过调用自己封装的分享方法即可执行分享操作，传入分享平台，分享内容包装类对象，分享类型
 ```java
-ShareApi.share(this, sharePlatform, content, new ShareListener() {
+
+share(SharePlatform.WEIXIN,content,ShareType.SHARE_IMAGE);
+
+
+ private void share(SharePlatform sharePlatform,BaseShareContent content,ShareType shareType) {
+        if(ShareApi.isPlatformInstalled(this,sharePlatform)){
+            switch (sharePlatform){
+                case WEIXIN:
+                case WEIXIN_PYQ:
+                    Toast.makeText(this,getResources().getString(R.string.tip_not_install_weixin),Toast.LENGTH_LONG).show();
+                    break;
+                case SINA_WEIBO:
+                    Toast.makeText(this,getResources().getString(R.string.tip_not_install_weibo),Toast.LENGTH_LONG).show();
+                    break;
+                default:
+                    break;
+            }
+            return;
+        }
+        ShareApi.share(this, sharePlatform, content, new ShareListener() {
             @Override
             public void onComplete() {
 
@@ -55,7 +75,8 @@ ShareApi.share(this, sharePlatform, content, new ShareListener() {
             public void onError(ShareError shareError) {
 
             }
-        },isShareVideo);
+        },shareType);
+    }
 ```
 ## 微信分享问题
 
