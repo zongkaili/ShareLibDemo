@@ -27,12 +27,12 @@ public class BaseShareContent implements Parcelable {
 
     public String shareTitle;       // 要分享的标题
     public String shareDetail;      // 要分享的详情（这里不同平台的叫法不一样，QQ叫summary，微博叫text，微信和易信叫description）
-    public String shareImage;       // 要分享的图片
-    public String shareUrl;         // 要分享的URL
+    public String shareImage;       // 要分享的图片路径
+    public String shareUrl;         // 要分享的链接URL
     public String shareVideoUrl;         // 要分享的视频URL
     public String shareVideoThumbPath;         // 要分享的视频缩略图路径
 
-    public BaseShareContent(String shareTitle, String shareDetail, String shareImage, String shareUrl,String shareVideoUrl,String shareVideoThumbPath) {
+    public BaseShareContent(String shareTitle, String shareDetail, String shareImage, String shareUrl, String shareVideoUrl, String shareVideoThumbPath) {
         this.shareTitle = shareTitle;
         this.shareDetail = shareDetail;
         this.shareImage = shareImage;
@@ -67,5 +67,15 @@ public class BaseShareContent implements Parcelable {
 
     public boolean isValid() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return " -->shareTitle : " + shareTitle
+                + " shareDetail : " + shareDetail
+                + " shareImage : " + shareImage
+                + " shareUrl : " + shareUrl
+                + " shareVideoUrl : " + shareVideoUrl
+                + " shareVideoThumbPath : " + shareVideoThumbPath;
     }
 }

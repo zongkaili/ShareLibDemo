@@ -8,6 +8,7 @@ import android.net.Uri;
 import java.io.File;
 
 import com.idealsee.share.ShareHelper;
+import com.idealsee.share.ShareType;
 import com.idealsee.share.content.BaseShareContent;
 
 /**
@@ -34,9 +35,9 @@ public class SystemShareApi {
         }
         context.startActivity(intent);
     }
-    public static void share(Context context, BaseShareContent content, boolean isShareVideo) {
+    public static void share(Context context, BaseShareContent content, ShareType shareType) {
         //TODO 暂时未做视频分享
-        if(isShareVideo)
+        if(shareType == ShareType.SHARE_VIDEO)
             return;
         Intent intent = new Intent(Intent.ACTION_SEND);
 

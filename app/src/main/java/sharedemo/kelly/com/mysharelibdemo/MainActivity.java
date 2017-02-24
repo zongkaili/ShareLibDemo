@@ -10,6 +10,7 @@ import com.idealsee.share.ShareApi;
 import com.idealsee.share.ShareError;
 import com.idealsee.share.ShareListener;
 import com.idealsee.share.SharePlatform;
+import com.idealsee.share.ShareType;
 import com.idealsee.share.content.BaseShareContent;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -48,34 +49,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()){
             case R.id.button1:
                 Toast.makeText(this,getResources().getString(R.string.tip_shareto_weixin),Toast.LENGTH_LONG).show();
-                share(SharePlatform.WEIXIN,content,false);
+                share(SharePlatform.WEIXIN,content,ShareType.SHARE_IMAGE);
                 break;
             case R.id.button2:
                 Toast.makeText(this,getResources().getString(R.string.tip_shareto_pyq),Toast.LENGTH_LONG).show();
-                share(SharePlatform.WEIXIN_TIMELINE,content,false);
+                share(SharePlatform.WEIXIN_PYQ,content,ShareType.SHARE_IMAGE);
                 break;
             case R.id.button3:
                 Toast.makeText(this,getResources().getString(R.string.tip_shareto_weibo),Toast.LENGTH_LONG).show();
-                share(SharePlatform.SINA_WEIBO,content,false);
+                share(SharePlatform.SINA_WEIBO,content,ShareType.SHARE_IMAGE);
                 break;
             case R.id.button4:
                 Toast.makeText(this,getResources().getString(R.string.tip_shareto_sms),Toast.LENGTH_LONG).show();
-                share(SharePlatform.SHORT_MESSAGE,content,false);
+                share(SharePlatform.SHORT_MESSAGE,content,ShareType.SHARE_IMAGE);
                 break;
             case R.id.button5:
                 Toast.makeText(this,getResources().getString(R.string.tip_shareto_system),Toast.LENGTH_LONG).show();
-                share(SharePlatform.SYSTEM_SHARE,content,false);
+                share(SharePlatform.SYSTEM_SHARE,content,ShareType.SHARE_IMAGE);
                 break;
             default:
                 break;
         }
     }
 
-    private void share(SharePlatform sharePlatform,BaseShareContent content,boolean isShareVideo) {
+    private void share(SharePlatform sharePlatform,BaseShareContent content,ShareType shareType) {
         if(ShareApi.isPlatformInstalled(this,sharePlatform)){
             switch (sharePlatform){
                 case WEIXIN:
-                case WEIXIN_TIMELINE:
+                case WEIXIN_PYQ:
                     Toast.makeText(this,getResources().getString(R.string.tip_not_install_weixin),Toast.LENGTH_LONG).show();
                     break;
                 case SINA_WEIBO:
@@ -101,6 +102,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onError(ShareError shareError) {
 
             }
-        },isShareVideo);
+        },shareType);
     }
 }

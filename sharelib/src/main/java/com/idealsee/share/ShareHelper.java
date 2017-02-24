@@ -2,6 +2,7 @@ package com.idealsee.share;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 
@@ -10,7 +11,7 @@ import java.io.ByteArrayOutputStream;
  * 分享相关的辅助类
  */
 public class ShareHelper {
-
+    private static final String TAG = ShareHelper.class.getSimpleName();
     private static final int THUMB_SIZE_MAX = 150;
 
     public static Bitmap getThumbBitmapFromFile(String imageFile) {
@@ -29,23 +30,29 @@ public class ShareHelper {
         }
     }
 
-    public static byte[] bmpToByteArray(Bitmap bmp) {
+    public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, output);
+        bmp.compress(Bitmap.CompressFormat.JPEG, 90, output);
+        if (needRecycle) {
+            bmp.recycle();
+        }
+
         byte[] result = output.toByteArray();
+        Log.d(TAG, "bmpToByteArray size=" + result.length / 1024);
         try {
             output.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return result;
     }
 
     public static String mergeString(String... strings) {
         StringBuilder builder = new StringBuilder();
-        for (String string: strings) {
+        for (String string : strings) {
             if (string != null && !string.isEmpty()) {
-                   builder.append(string);
+                builder.append(string);
             }
         }
         return builder.toString();

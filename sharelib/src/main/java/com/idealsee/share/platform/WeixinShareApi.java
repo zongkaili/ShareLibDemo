@@ -3,9 +3,9 @@ package com.idealsee.share.platform;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.text.TextUtils;
+import android.util.Log;
 
+import com.idealsee.share.ShareType;
 import com.idealsee.share.content.BaseShareContent;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXImageObject;
@@ -21,6 +21,7 @@ import com.idealsee.share.ShareHelper;
  * 微信分享功能，调用微信SDK相关的Api
  */
 public class WeixinShareApi {
+    private static final String TAG = WeixinShareApi.class.getSimpleName();
     // 微信的APP ID，由于微信在回调Receiver（WXReceiver）里面需要用到APP ID，所以这里定义为public
     public static final String WEIXIN_APP_ID = "wx537feebd640931cc";
 
@@ -28,53 +29,60 @@ public class WeixinShareApi {
      * 普通图片或链接分享
      *
      * @param context    context
-     * @param content      要分享的内容对象
-     * @param isShareVideo  是否时视频分享
+     * @param content    要分享的内容对象
+     * @param shareType  分享类型：　视频分享　图片分享　链接分享
      * @param isTimeline 是否分享到朋友圈
      */
-    public static void share(Context context, BaseShareContent content, boolean isShareVideo, boolean isTimeline) {
+    public static void share(Context context, BaseShareContent content, ShareType shareType, boolean isTimeline) {
         IWXAPI api = getWeixinApi(context);
-        SendMessageToWX.Req req = getWeixinShareReq(content, isShareVideo, isTimeline);
+        SendMessageToWX.Req req = getWeixinShareReq(content, shareType, isTimeline);
         api.sendReq(req);
     }
 
-    private static SendMessageToWX.Req getWeixinShareReq(BaseShareContent content, boolean isShareVideo, boolean isTimeline) {
+    private static SendMessageToWX.Req getWeixinShareReq(BaseShareContent content, ShareType shareType, boolean isTimeline) {
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         WXMediaMessage msg = new WXMediaMessage();
 
-        if (isShareVideo) {//视频分享
+        if (shareType == ShareType.SHARE_VIDEO) {//视频分享
             setShareVideoReq(content, req, msg);
-        } else {//图片或者链接分享
-            setShareImgUrlReq(content, req, msg);
+        } else if (shareType == ShareType.SHARE_LINK) {//链接分享
+            setShareLinkReq(content, req, msg);
+        } else if (shareType == ShareType.SHARE_IMAGE) {//图片分享
+            setShareImgReq(content, req, msg);
+        } else {
+            Log.e(TAG, "no this share type!");
         }
-
-        msg.title = content.shareTitle;
-        msg.description = content.shareDetail;
 
         req.message = msg;
         req.scene = isTimeline ? SendMessageToWX.Req.WXSceneTimeline : SendMessageToWX.Req.WXSceneSession;
+        Log.d(TAG, "  msg : " + msg + " req : " + req);
         return req;
     }
 
-    private static void setShareImgUrlReq(BaseShareContent content, SendMessageToWX.Req req, WXMediaMessage msg) {
-        if (!TextUtils.isEmpty(content.shareUrl)) {//链接分享
-            WXWebpageObject webObj = new WXWebpageObject();
-            webObj.webpageUrl = content.shareUrl;
-            msg.mediaObject = webObj;
-            req.transaction = buildTransaction("webpage");
+    private static void setShareLinkReq(BaseShareContent content, SendMessageToWX.Req req, WXMediaMessage msg) {
+        WXWebpageObject webObj = new WXWebpageObject();
+        webObj.webpageUrl = content.shareUrl;
+        msg.mediaObject = webObj;
+        msg.title = content.shareTitle;
+        msg.description = content.shareDetail;
+        req.transaction = buildTransaction("webpage");
+    }
+
+    private static void setShareImgReq(BaseShareContent content, SendMessageToWX.Req req, WXMediaMessage msg) {
+        WXImageObject imgObj = new WXImageObject();
+        imgObj.setImagePath(content.shareImage);
+
+        msg.mediaObject = imgObj;
+        //weixin store image which named by title,so title must be unique
+        msg.title = String.valueOf(System.currentTimeMillis());
+        msg.description = content.shareTitle;
+
+        Bitmap bmp = ShareHelper.getThumbBitmapFromFile(content.shareImage);
+        if (bmp != null) {
+            msg.thumbData = ShareHelper.bmpToByteArray(bmp, true);
         }
 
-        if (!TextUtils.isEmpty(content.shareImage)) {//图文分享
-            WXImageObject imgObj = new WXImageObject();
-            imgObj.setImagePath(content.shareImage);
-
-            Bitmap bmp = ShareHelper.getThumbBitmapFromFile(content.shareImage);
-            if (bmp != null) {
-                msg.thumbData = ShareHelper.bmpToByteArray(bmp);
-            }
-            msg.mediaObject = imgObj;
-            req.transaction = buildTransaction("img");
-        }
+        req.transaction = buildTransaction("img");
     }
 
     private static void setShareVideoReq(BaseShareContent content, SendMessageToWX.Req req, WXMediaMessage msg) {
@@ -83,8 +91,10 @@ public class WeixinShareApi {
         msg.mediaObject = videoObj;
         Bitmap bmp = ShareHelper.getThumbBitmapFromFile(content.shareVideoThumbPath);
         if (bmp != null) {
-            msg.thumbData = ShareHelper.bmpToByteArray(bmp);
+            msg.thumbData = ShareHelper.bmpToByteArray(bmp, true);
         }
+        msg.title = content.shareTitle;
+        msg.description = content.shareDetail;
         req.transaction = buildTransaction("video");
     }
 

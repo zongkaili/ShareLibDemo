@@ -2,11 +2,9 @@ package com.idealsee.share;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
 
 import com.idealsee.share.content.BaseShareContent;
 import com.idealsee.share.platform.ShortMessageShareApi;
@@ -33,7 +31,7 @@ public class ShareApi {
 //                return WeiBoShareActivity.isAppInstalled(activity);
                 return WeiboShareApi.isAppInstalled(activity);
             case WEIXIN:
-            case WEIXIN_TIMELINE:
+            case WEIXIN_PYQ:
                 return WeixinShareApi.isAppInstalled(activity);
             case SHORT_MESSAGE:
             case SYSTEM_SHARE:
@@ -78,56 +76,55 @@ public class ShareApi {
     }
 
     // 分享
-    public static void share(Activity activity, SharePlatform platform, BaseShareContent content, ShareListener listener, boolean isShareVideo) {
+    public static void share(Activity activity, SharePlatform platform, BaseShareContent content, ShareListener listener, ShareType shareType) {
         // 没有分享内容，返回
-        if (content == null) {
+        if (content == null)
             return;
-        }
 
         mListener = new SoftReference<>(listener);
 
         switch (platform) {
             case SINA_WEIBO:
-                shareToWeibo(activity, content, isShareVideo);
+                shareToWeibo(activity, content, shareType);
                 break;
             case WEIXIN:
-                shareToWeixin(activity, content, isShareVideo, false);
+                shareToWeixin(activity, content, shareType, false);
                 break;
-            case WEIXIN_TIMELINE:
-                shareToWeixin(activity, content, isShareVideo, true);
+            case WEIXIN_PYQ:
+                shareToWeixin(activity, content, shareType, true);
                 break;
             case SHORT_MESSAGE:
-                shareToShortMessage(activity, content, isShareVideo);
+                shareToShortMessage(activity, content, shareType);
                 break;
             case SYSTEM_SHARE:
-                shareToSystemShare(activity, content, isShareVideo);
+                shareToSystemShare(activity, content, shareType);
                 break;
         }
     }
 
     // 分享到新浪微博
-    private static void shareToWeibo(Activity activity, BaseShareContent content, boolean isShareVideo) {
+    private static void shareToWeibo(Activity activity, BaseShareContent content, ShareType shareType) {
 //        Intent intent = new Intent(activity, WeiBoShareActivity.class);
 //        intent.putExtra(BaseShareContent.title, title);
 //        intent.putExtra(BaseShareContent.detail, detail);
 //        intent.putExtra(BaseShareContent.imageFile, imageFile);
 //        intent.putExtra(BaseShareContent.shareURL, shareURL);
 //        activity.startActivity(intent);
-        WeiboShareApi.share(activity, content, isShareVideo);
+        WeiboShareApi.share(activity, content, shareType);
     }
 
     // 分享到微信
-    private static void shareToWeixin(Context context, BaseShareContent content, boolean isShareVideo, boolean isTimeline) {
-        WeixinShareApi.share(context, content, isShareVideo, isTimeline);
+    private static void shareToWeixin(Context context, BaseShareContent content, ShareType shareType, boolean isTimeline) {
+        WeixinShareApi.share(context, content, shareType, isTimeline);
     }
 
     // 分享到短信
-    private static void shareToShortMessage(Context context, BaseShareContent content, boolean isShareVideo) {
-        ShortMessageShareApi.share(context, content, isShareVideo);
+    private static void shareToShortMessage(Context context, BaseShareContent content, ShareType shareType) {
+        ShortMessageShareApi.share(context, content, shareType);
     }
 
     // 分享到系统分享
-    private static void shareToSystemShare(Context context, BaseShareContent content, boolean isShareVideo) {
-        SystemShareApi.share(context, content, isShareVideo);
+    private static void shareToSystemShare(Context context, BaseShareContent content, ShareType shareType) {
+        SystemShareApi.share(context, content, shareType);
     }
 }

@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 
 import com.idealsee.share.ShareHelper;
+import com.idealsee.share.ShareType;
 import com.idealsee.share.content.BaseShareContent;
 import com.sina.weibo.sdk.WeiboAppManager;
 import com.sina.weibo.sdk.api.ImageObject;
@@ -30,14 +31,14 @@ public class WeiboShareApi {
     /**
      * 分享
      *
-     * @param activity     activity
-     * @param content      要分享的内容
-     * @param isShareVideo 是否是视频分享
+     * @param activity  activity
+     * @param content   要分享的内容
+     * @param shareType 分享类型
      */
-    public static void share(Activity activity, BaseShareContent content, boolean isShareVideo) {
+    public static void share(Activity activity, BaseShareContent content, ShareType shareType) {
         // 创建微博分享接口实例
         IWeiboShareAPI mWeiboShareAPI = getWeiboApi(activity);
-        SendMultiMessageToWeiboRequest multiRequest = getWeiboShareMultiMessage(content, isShareVideo);
+        SendMultiMessageToWeiboRequest multiRequest = getWeiboShareMultiMessage(content, shareType);
         // 发送分享请求
         mWeiboShareAPI.sendRequest(activity, multiRequest);
     }
@@ -47,18 +48,18 @@ public class WeiboShareApi {
      *
      * @return
      */
-    private static SendMultiMessageToWeiboRequest getWeiboShareMultiMessage(BaseShareContent content, boolean isShareVideo) {
+    private static SendMultiMessageToWeiboRequest getWeiboShareMultiMessage(BaseShareContent content, ShareType shareType) {
         WeiboMultiMessage weiboMessage = new WeiboMultiMessage();
 
         // 要分享的文本内容
         TextObject textObject = new TextObject();
-        textObject.text = content.shareDetail;
+        textObject.text = content.shareTitle;
         weiboMessage.textObject = textObject;
 
-        if (isShareVideo) {
+        if (shareType == ShareType.SHARE_VIDEO) {//视频分享
             setShareVideoMultiMsg(content, weiboMessage);
-        } else {
-            setShareImgUrlMultiMsg(content, weiboMessage);
+        } else {//图文分享
+            setShareImgUrlMultiMsg(content, shareType, weiboMessage);
         }
 
         // 将要分享的内容封装到SendMultiMessageToWeiboRequest中
@@ -70,10 +71,12 @@ public class WeiboShareApi {
 
     /**
      * 设置视频分享时的分享内容
+     * TODO 微博分享暂时未区分图片分享和链接分享
+     *
      * @param content
      * @param weiboMessage
      */
-    private static void setShareImgUrlMultiMsg(BaseShareContent content, WeiboMultiMessage weiboMessage) {
+    private static void setShareImgUrlMultiMsg(BaseShareContent content, ShareType shareType, WeiboMultiMessage weiboMessage) {
         Bitmap normalBm = null, thumbBm = null;
         if (!TextUtils.isEmpty(content.shareImage)) {//图片分享
             normalBm = BitmapFactory.decodeFile(content.shareImage);
@@ -106,6 +109,7 @@ public class WeiboShareApi {
 
     /**
      * 设置视频分享时的分享内容
+     *
      * @param content
      * @param weiboMessage
      */
