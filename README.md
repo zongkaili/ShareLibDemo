@@ -5,8 +5,12 @@
 
 ## 使用说明
 
-### 1. 引入sdk
-导入此module，然后在app的build.gradle的dependencies中添加compile project(':sharelib')
+### 1. 引入
+1. build.gradle中引用
+```groovy
+   compile 'com.kelly.sharelibdemo:sharelib:1.0.1'
+```
+2.导入此module，然后在app的build.gradle的dependencies中添加compile project(':sharelib')
 
 ### 2. AndroidManifest配置
 以下权限必须添加，如果原项目中有则可不必重复添加
