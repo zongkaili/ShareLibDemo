@@ -1,4 +1,4 @@
-package sharedemo.kelly.com.mysharelibdemo.wxapi;
+package com.kelly.sharelibdemo.wxapi;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

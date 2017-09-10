@@ -1,4 +1,4 @@
-package sharedemo.kelly.com.mysharelibdemo;
+package com.kelly.sharelibdemo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

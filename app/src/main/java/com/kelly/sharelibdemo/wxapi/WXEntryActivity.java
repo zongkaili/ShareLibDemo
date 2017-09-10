@@ -1,4 +1,4 @@
-package sharedemo.kelly.com.mysharelibdemo.wxapi;
+package com.kelly.sharelibdemo.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;

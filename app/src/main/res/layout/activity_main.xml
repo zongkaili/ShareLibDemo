@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="sharedemo.kelly.com.mysharelibdemo.MainActivity">
+    tools:context="com.kelly.sharelibdemo.MainActivity">
 
     <Button
         android:id="@+id/button1"

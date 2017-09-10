@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
     defaultConfig {
-        applicationId "sharedemo.kelly.com.mysharelibdemo"
+        applicationId "com.kelly.sharelibdemo"
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.1'
     testCompile 'junit:junit:4.12'
     compile project(':sharelib')
+//    compile 'com.kelly.sharelibdemo:sharelib:1.0.1'
 }
